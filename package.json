@@ -8,7 +8,9 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "tauri": "tauri"
+    "generate": "typia generate --input src/validation/source --output src/validation/generated --project tsconfig.json",
+    "tauri": "tauri",
+    "prepare": "ts-patch install && typia patch && pnpm generate"
   },
   "license": "MIT",
   "dependencies": {
@@ -16,8 +18,10 @@
     "@solidjs/router": "^0.13.3",
     "@tanstack/solid-query": "^5.36.0",
     "@tauri-apps/api": "^1.5.5",
+    "nanoid": "^5.0.7",
     "solid-js": "^1.8.17",
-    "telegram": "2.21.1"
+    "telegram": "2.21.1",
+    "typia": "^6.0.3"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.5.13",
@@ -26,7 +30,9 @@
     "postcss": "^8.4.38",
     "prettier": "^3.2.5",
     "tailwindcss": "^3.4.3",
-    "typescript": "^5.4.5",
+    "ts-node": "^10.9.2",
+    "ts-patch": "^3.1.2",
+    "typescript": "^5.4.2",
     "vite": "^5.2.11",
     "vite-plugin-solid": "^2.10.2"
   }

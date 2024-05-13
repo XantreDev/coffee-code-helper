@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import { createMutation } from "@tanstack/solid-query";
 import { telegramClient } from "../mtprotoClient";
 import { ModalProps, showModal } from "../modals";
