@@ -1,5 +1,6 @@
 import {
   createDeferred,
+  createEffect,
   createSignal,
   For,
   Show,
@@ -27,10 +28,10 @@ const createStorageSignal = <T,>(
       return;
     }
     const json = localStorage.getItem(key);
+    isInitialized = true;
     if (json !== null) {
       return set(() => serializer.fromJSON(json));
     }
-    isInitialized = true;
     return set(() => initial());
   };
 
@@ -61,28 +62,41 @@ const [places, setPlaces] = createStorageSignal(
   () => []
 );
 
+const removePlace = (removeId: string) => {
+  setPlaces(places => places.filter(curPlace => curPlace.id !== removeId))
+}
+
 export const PlacesScreen = () => {
   return (
-    <div class="grid auto-cols-fr auto-rows-fr">
+    <div class="flex flex-col gap-4">
       <A href="/place/new" class="btn">
         Create new
       </A>
-      <For each={places()}>
-        {(place) => (
-          <div class="card w-96 bg-primary text-primary-content">
-            <div class="card-body">
-              <strong class="card-title">{place.name}</strong>
-              <h2 class="card-title">Card title!</h2>
-              <p>{place.address}</p>
-              <div class="card-actions justify-end">
-                <A class="btn" href={`/place/edit/${place.id}`}>
-                  Edit
-                </A>
+
+      <ul class="grid grid-cols-2 gap-4 auto-cols-auto">
+        <For each={places()}>
+          {(place) => (
+            <li class="card bg-primary text-primary-content">
+              <div class="card-body">
+                <strong class="card-title">{place.name}</strong>
+                <h2 class="card-title">Card title!</h2>
+                <p>{place.address}</p>
+                <div class="card-actions mt-4 -mb-4 justify-end">
+                  <A class="btn" href={`/place/edit/${place.id}`}>
+                    Edit
+                  </A>
+
+                  <button onClick={() => {
+                    removePlace(place.id)
+                  }} type='button' class="btn btn-error" >
+                    Delete
+                  </button>
+                </div>
               </div>
-            </div>
-          </div>
-        )}
-      </For>
+            </li>
+          )}
+        </For>
+      </ul>
     </div>
   );
 };
@@ -90,12 +104,12 @@ export const PlacesScreen = () => {
 export const PlaceScreen = (
   props:
     | {
-        action: "edit";
-        id: string;
-      }
+      action: "edit";
+      id: string;
+    }
     | {
-        action: "create";
-      }
+      action: "create";
+    }
 ) => {
   const [place, setPlace] = createSignal<Partial<PlaceData>>(
     props.action === "edit" ? places().find((it) => it.id === props.id)! : {}
@@ -148,9 +162,7 @@ export const PlaceScreen = (
           };
           setPlaces([...places(), newItem]);
 
-          navigate(`/place/edit/${newItem.id}`, {
-            replace: true,
-          });
+          navigate(-1);
           return;
         }
         setPlaces(
@@ -158,10 +170,10 @@ export const PlaceScreen = (
             (it): validation.Place =>
               it.id === props.id
                 ? {
-                    ...it,
-                    ...validationResult.data,
-                    updatedAt: new Date().toISOString(),
-                  }
+                  ...it,
+                  ...validationResult.data,
+                  updatedAt: new Date().toISOString(),
+                }
                 : it
           )
         );
