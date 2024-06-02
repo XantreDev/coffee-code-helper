@@ -1,0 +1,8 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.7.3/schema.json",
+	"files": {
+		"include": ["src/**"],
+		"ignoreUnknown": true,
+		"ignore": ["src/validation/generated/**"]
+	}
+}

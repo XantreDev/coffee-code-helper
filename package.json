@@ -7,6 +7,9 @@
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
+    "lint": "biome check .",
+    "sort-classes": "biome check . --config-path=./biome.class-sort.json --apply-unsafe --diagnostic-level=error",
+    "lint:fix": "pnpm sort-classes && biome check . --apply",
     "serve": "vite preview",
     "generate": "typia generate --input src/validation/source --output src/validation/generated --project tsconfig.json",
     "tauri": "tauri",
@@ -24,6 +27,7 @@
     "typia": "^6.0.3"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.7.3",
     "@tauri-apps/cli": "^1.5.13",
     "autoprefixer": "^10.4.19",
     "daisyui": "^4.11.1",

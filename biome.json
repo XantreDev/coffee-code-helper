@@ -1,0 +1,28 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.7.3/schema.json",
+	"extends": ["./biome.base.json"],
+	"organizeImports": {
+		"enabled": true
+	},
+	"formatter": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"nursery": {
+				"useSortedClasses": "warn"
+			},
+			"correctness": {
+				"noUnusedImports": "error"
+			},
+			"style": {
+				"noNonNullAssertion": "off"
+			},
+			"performance": {
+				"all": true
+			}
+		}
+	}
+}
